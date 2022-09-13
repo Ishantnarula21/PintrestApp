@@ -121,26 +121,22 @@ class Pintrest
                 $ext = $imagename[1];
 
                 //getting table id
-                if ($ext != "jpg" or $ext != "png" or $ext != "jpeg") {
-                    echo "The File Type Must be png,jpg,jpeg";
-                } else {
-                    $query = "show table status like 'upload' ";
-                    $result = $this->con->query($query);
-                    $row = $result->fetch_assoc();
-                    $id = $row['Auto_increment'];
-                    $newfilename = $id . "." . $ext;
+                $query = "show table status like 'upload' ";
+                $result = $this->con->query($query);
+                $row = $result->fetch_assoc();
+                $id = $row['Auto_increment'];
+                $newfilename = $id . "." . $ext;
 
-                    //inserting record
-                    $query = "insert into upload (title,imagename,visibility,username,date,time,day) VALUES('$title','$newfilename','$visibility','$username','$date','$time','$day')";
-                    $result = $this->con->query($query);
-                    if ($result == true) {
-                        //moving uploaded file to upload folder
-                        move_uploaded_file($filepath, 'upload/' . $filename);
-                        echo "file Uploaded";
-                    }
-                    $Image = Image::make("upload/" . $filename)->resize(200, 200)->save("upload/" . $newfilename, 100);
-                    unlink('upload/' . $filename);
+                //inserting record
+                $query = "insert into upload (title,imagename,visibility,username,date,time,day) VALUES('$title','$newfilename','$visibility','$username','$date','$time','$day')";
+                $result = $this->con->query($query);
+                if ($result == true) {
+                    //moving uploaded file to upload folder
+                    move_uploaded_file($filepath, 'upload/' . $filename);
+                    echo "file Uploaded";
                 }
+                $Image = Image::make("upload/" . $filename)->resize(200, 200)->save("upload/" . $newfilename, 100);
+                unlink('upload/' . $filename);
             }
         } else {
 
